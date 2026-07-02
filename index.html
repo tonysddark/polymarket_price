@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="1800">
+<title>임진왜란:조선의 반격 게임머니 시세</title>
+<style>
+  :root{--blue:#2563eb;--bg:#f4f6fb;--card:#fff;--line:#e5e7eb;--muted:#6b7280;--up:#dc2626;--down:#2563eb;--hi:#ea580c;--lo:#0369a1;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Malgun Gothic','맑은 고딕',system-ui,sans-serif;background:var(--bg);color:#111827;line-height:1.55;}
+  .wrap{max-width:860px;margin:0 auto;padding:24px 18px 60px;}
+  header h1{font-size:22px;margin:0 0 4px;}
+  header p{margin:0;color:var(--muted);font-size:14px;}
+  .hero{background:linear-gradient(135deg,#2563eb,#1e40af);color:#fff;border-radius:16px;padding:26px;margin:22px 0;box-shadow:0 10px 30px rgba(37,99,235,.25);}
+  .hero .label{font-size:14px;opacity:.9;}
+  .hero .price{font-size:44px;font-weight:800;letter-spacing:-1px;margin:6px 0 2px;}
+  .hero .unit{font-size:18px;font-weight:600;opacity:.95;}
+  .hero .diff{margin-top:8px;font-size:15px;}
+  .hero .diff .up{color:#fecaca;font-weight:700;} .hero .diff .down{color:#bfdbfe;font-weight:700;} .hero .diff .flat{color:#e5e7eb;font-weight:700;}
+  .hero small{opacity:.85;}
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;}
+  .card .t{font-size:13px;color:var(--muted);} .card .v{font-size:19px;font-weight:700;margin-top:4px;}
+  section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:18px 0;}
+  section h2{font-size:16px;margin:0 0 4px;} section .sub{font-size:12.5px;color:var(--muted);margin:0 0 14px;}
+  .chart{display:block;} .axl{font-size:11px;fill:#9ca3af;} .barl{font-size:9.5px;fill:#64748b;text-anchor:middle;}
+  .legend{display:flex;gap:16px;justify-content:center;margin-top:6px;font-size:12.5px;color:#4b5563;}
+  .legend .lg{display:inline-flex;align-items:center;gap:5px;} .legend i{width:14px;height:3px;border-radius:2px;display:inline-block;}
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:center;}
+  th{background:#f9fafb;color:#374151;font-weight:600;}
+  td.num{font-variant-numeric:tabular-nums;} td.strong{font-weight:700;color:var(--blue);}
+  td.hi{color:var(--hi);font-weight:600;} td.lo{color:var(--lo);font-weight:600;}
+  tbody tr:first-child{background:#eff6ff;}
+  .muted{color:var(--muted);font-size:14px;}
+  /* 거래완료 일자별 토글 */
+  .day-head{display:flex;align-items:center;gap:10px;padding:8px 12px;font-size:12.5px;color:#6b7280;font-weight:600;border-bottom:2px solid var(--line);}
+  details.day{border-bottom:1px solid var(--line);}
+  details.day > summary{display:flex;align-items:center;gap:10px;padding:11px 12px;cursor:pointer;list-style:none;font-size:14px;transition:background .12s;}
+  details.day > summary::-webkit-details-marker{display:none;}
+  details.day > summary:hover{background:#f8fafc;}
+  details.day > summary::before{content:'\25B8';color:#9ca3af;font-size:12px;width:12px;flex:none;}
+  details.day[open] > summary::before{content:'\25BE';}
+  details.day[open] > summary{background:#eff6ff;font-weight:600;}
+  .d-date{width:110px;flex:none;font-variant-numeric:tabular-nums;}
+  .d-cnt{width:70px;flex:none;color:#374151;}
+  .d-stat{flex:1;font-variant-numeric:tabular-nums;color:#4b5563;} .d-stat em{color:#9ca3af;font-style:normal;font-size:11.5px;}
+  .d-stat b.lo{color:var(--lo);} .d-stat b.hi{color:var(--hi);} .d-stat b.avg{color:var(--blue);}
+  .day-head .d-date,.day-head .d-cnt,.day-head .d-stat{width:auto;}
+  .day-head .d-date{width:122px;} .day-head .d-cnt{width:70px;}
+  .d-body{padding:2px 12px 14px 34px;overflow-x:auto;}
+  table.inner{font-size:13px;} table.inner th{background:#f1f5f9;} table.inner td,table.inner th{padding:6px 8px;text-align:center;}
+  table.inner td.nm{text-align:left;max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  table.inner tbody tr:first-child{background:transparent;}
+  footer{margin-top:26px;color:var(--muted);font-size:12.5px;text-align:center;line-height:1.8;}
+  footer a{color:var(--blue);text-decoration:none;}
+  @media(max-width:560px){.cards{grid-template-columns:repeat(2,1fr);}.hero .price{font-size:36px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>임진왜란:조선의 반격 &mdash; 게임머니 시세</h1>
+    <p>바로템(barotem.com) · 만(10,000) 게임머니당 가격</p>
+  </header>
+
+  <div class="hero">
+    <div class="label">현재 거래가능 매물(호가) 평균가</div>
+    <div class="price">8,069<span class="unit"> 원 / 만</span></div>
+    <div class="diff"></div>
+    <div style="margin-top:10px;"><small>기준: 2026-07-02 11:57 · 거래가능 매물 108건</small></div>
+  </div>
+
+  <div class="cards">
+    <div class="card"><div class="t">평균가</div><div class="v">8,069원</div></div>
+    <div class="card"><div class="t">중앙값</div><div class="v">8,200원</div></div>
+    <div class="card"><div class="t">최저 호가</div><div class="v">6,000원</div></div>
+    <div class="card"><div class="t">최고 호가</div><div class="v">9,091원</div></div>
+  </div>
+
+  <section>
+    <h2>거래완료(체결) 일별 시세 추이</h2>
+    <p class="sub">실제 거래 종료된 매물 기준 · 일자별 최저 / 평균 / 최고 체결가</p>
+    <svg viewBox='0 0 760 240' width='100%' preserveAspectRatio='xMidYMid meet' class='chart'>
+  <line x1='46' y1='194' x2='714' y2='194' stroke='#d1d5db'/>
+  <line x1='46' y1='46' x2='46' y2='194' stroke='#d1d5db'/>
+  <text x='6' y='50' class='axl'>9,000</text>
+  <text x='6' y='194' class='axl'>4,783</text>
+  <rect x='38.0' y='161.7' width='16.0' height='32.3' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-22 거래 8건</title></rect><rect x='104.8' y='117.3' width='16.0' height='76.7' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-23 거래 19건</title></rect><rect x='171.6' y='145.6' width='16.0' height='48.4' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-24 거래 12건</title></rect><rect x='238.4' y='153.6' width='16.0' height='40.4' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-25 거래 10건</title></rect><rect x='305.2' y='173.8' width='16.0' height='20.2' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-26 거래 5건</title></rect><rect x='372.0' y='125.4' width='16.0' height='68.6' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-27 거래 17건</title></rect><rect x='438.8' y='117.3' width='16.0' height='76.7' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-28 거래 19건</title></rect><rect x='505.6' y='161.7' width='16.0' height='32.3' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-29 거래 8건</title></rect><rect x='572.4' y='133.5' width='16.0' height='60.5' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-30 거래 15건</title></rect><rect x='639.2' y='93.1' width='16.0' height='100.9' fill='#94a3b8' fill-opacity='0.45'><title>2026-07-01 거래 25건</title></rect><rect x='706.0' y='185.9' width='16.0' height='8.1' fill='#94a3b8' fill-opacity='0.45'><title>2026-07-02 거래 2건</title></rect>
+  <text x='46.0' y='158.7' class='barl'>8</text><text x='112.8' y='114.3' class='barl'>19</text><text x='179.6' y='142.6' class='barl'>12</text><text x='246.4' y='150.6' class='barl'>10</text><text x='313.2' y='170.8' class='barl'>5</text><text x='380.0' y='122.4' class='barl'>17</text><text x='446.8' y='114.3' class='barl'>19</text><text x='513.6' y='158.7' class='barl'>8</text><text x='580.4' y='130.5' class='barl'>15</text><text x='647.2' y='90.1' class='barl'>25</text><text x='714.0' y='182.9' class='barl'>2</text>
+  <polygon points='46.0,91.6 112.8,65.7 179.6,46.0 246.4,88.1 313.2,101.1 380.0,64.6 446.8,63.5 513.6,98.6 580.4,64.6 647.2,70.6 714.0,116.2 714.0,127.9 647.2,168.8 580.4,161.3 513.6,151.3 446.8,194.0 380.0,154.7 313.2,186.4 246.4,139.6 179.6,116.2 112.8,142.5 46.0,125.9' fill='#2563eb' fill-opacity='0.10'/>
+  <polyline points='46.0,91.6 112.8,65.7 179.6,46.0 246.4,88.1 313.2,101.1 380.0,64.6 446.8,63.5 513.6,98.6 580.4,64.6 647.2,70.6 714.0,116.2' fill='none' stroke='#f97316' stroke-width='1.4' stroke-dasharray='4 3'/>
+  <polyline points='46.0,125.9 112.8,142.5 179.6,116.2 246.4,139.6 313.2,186.4 380.0,154.7 446.8,194.0 513.6,151.3 580.4,161.3 647.2,168.8 714.0,127.9' fill='none' stroke='#0ea5e9' stroke-width='1.4' stroke-dasharray='4 3'/>
+  <polyline points='46.0,102.4 112.8,94.2 179.6,79.5 246.4,106.5 313.2,123.4 380.0,115.7 446.8,138.0 513.6,128.0 580.4,123.1 647.2,119.4 714.0,122.0' fill='none' stroke='#2563eb' stroke-width='2.5'/>
+  <circle cx='46.0' cy='102.4' r='3' fill='#2563eb'><title>2026-06-22  최저 6,723 / 평균 7,392 / 최고 7,700원 (8건)</title></circle><circle cx='112.8' cy='94.2' r='3' fill='#2563eb'><title>2026-06-23  최저 6,250 / 평균 7,627 / 최고 8,440원 (19건)</title></circle><circle cx='179.6' cy='79.5' r='3' fill='#2563eb'><title>2026-06-24  최저 7,000 / 평균 8,046 / 최고 9,000원 (12건)</title></circle><circle cx='246.4' cy='106.5' r='3' fill='#2563eb'><title>2026-06-25  최저 6,333 / 평균 7,276 / 최고 7,800원 (10건)</title></circle><circle cx='313.2' cy='123.4' r='3' fill='#2563eb'><title>2026-06-26  최저 5,000 / 평균 6,794 / 최고 7,429원 (5건)</title></circle><circle cx='380.0' cy='115.7' r='3' fill='#2563eb'><title>2026-06-27  최저 5,902 / 평균 7,015 / 최고 8,470원 (17건)</title></circle><circle cx='446.8' cy='138.0' r='3' fill='#2563eb'><title>2026-06-28  최저 4,783 / 평균 6,379 / 최고 8,500원 (19건)</title></circle><circle cx='513.6' cy='128.0' r='3' fill='#2563eb'><title>2026-06-29  최저 6,000 / 평균 6,664 / 최고 7,500원 (8건)</title></circle><circle cx='580.4' cy='123.1' r='3' fill='#2563eb'><title>2026-06-30  최저 5,714 / 평균 6,802 / 최고 8,470원 (15건)</title></circle><circle cx='647.2' cy='119.4' r='3' fill='#2563eb'><title>2026-07-01  최저 5,500 / 평균 6,910 / 최고 8,300원 (25건)</title></circle><circle cx='714.0' cy='122.0' r='3' fill='#2563eb'><title>2026-07-02  최저 6,667 / 평균 6,834 / 최고 7,000원 (2건)</title></circle>
+  <text x='46' y='232' class='axl'>2026-06-22</text>
+  <text x='714' y='232' class='axl' text-anchor='end'>2026-07-02</text>
+</svg>
+<div class='legend'><span class='lg'><i style='background:#2563eb'></i>평균 체결가</span><span class='lg'><i style='background:#f97316'></i>최고가</span><span class='lg'><i style='background:#0ea5e9'></i>최저가</span><span class='lg'><i style='background:#94a3b8;width:10px;height:10px;border-radius:2px'></i>거래건수</span></div>
+  </section>
+
+  <section>
+    <h2>거래완료(체결) 일자별 기록</h2>
+    <p class="sub">누적 집계 매물 140건 · 날짜는 매물 등록일 기준 · <b>각 날짜를 클릭하면 그날 거래 세부내역이 열립니다</b></p>
+    <div class="day-head">
+      <span class="d-date">날짜</span><span class="d-cnt">거래건수</span><span class="d-stat">만당가 (최저 · 평균 · 최고)</span>
+    </div>
+<details class="day">
+  <summary>
+    <span class="d-date">2026-07-02</span>
+    <span class="d-cnt">2건</span>
+    <span class="d-stat"><b class="lo">6,667</b> · <b class="avg">6,834</b> · <b class="hi">7,000</b> <em>원/만 (최저·평균·최고)</em></span>
+  </summary>
+  <div class="d-body">
+    <table class="inner">
+      <thead><tr><th>시각</th><th>서버</th><th>물품명</th><th>수량</th><th>거래액</th><th>만당가</th></tr></thead>
+      <tbody><tr><td>01:12</td><td>한양</td><td class='nm'>개인청옥석 120000 최저가 팝니다 (전섭 바로 거래 가능합니다! 03시까지 대기중! )</td><td>12만 게임머니</td><td class='num'>80,000원</td><td class='num strong'>6,667원</td></tr><tr><td>11:10</td><td>한양</td><td class='nm'>20만 청옥석 팝니다(빠른거래대기)</td><td>20만 게임머니</td><td class='num'>140,000원</td><td class='num strong'>7,000원</td></tr></tbody>
+    </table>
+  </div>
+</details><details class="day">
+  <summary>
+    <span class="d-date">2026-07-01</span>
+    <span class="d-cnt">25건</span>
+    <span class="d-stat"><b class="lo">5,500</b> · <b class="avg">6,910</b> · <b class="hi">8,300</b> <em>원/만 (최저·평균·최고)</em></span>
+  </summary>
+  <div class="d-body">
+    <table class="inner">
+      <thead><tr><th>시각</th><th>서버</th><th>물품명</th><th>수량</th><th>거래액</th><th>만당가</th></tr></thead>
+      <tbody><tr><td>00:31</td><td>부산</td><td class='nm'>15만 청옥석 한방 팝니다 전섭가능</td><td>15만 게임머니</td><td class='num'>105,000원</td><td class='num strong'>7,000원</td></tr><tr><td>01:39</td><td>한양</td><td class='nm'>10만 청옥석 팝니다 거래서 한방거래 전섭가능</td><td>10만 게임머니</td><td class='num'>60,000원</td><td class='num strong'>6,000원</td></tr><tr><td>05:34</td><td>전주</td><td class='nm'>12만 게임머니 팝니다.</td><td>12만 게임머니</td><td class='num'>66,000원</td><td class='num strong'>5,500원</td></tr><tr><td>07:39</td><td>한양</td><td class='nm'>10만 팝니다</td><td>10만 게임머니</td><td class='num'>70,000원</td><td class='num strong'>7,000원</td></tr><tr><td>07:48</td><td>기타</td><td class='nm'>12만 청옥석 팔고 접어요, 최저가</td><td>12만 게임머니</td><td class='num'>75,000원</td><td class='num strong'>6,250원</td></tr><tr><td>10:51</td><td>대구</td><td class='nm'>총22만 4분할 7만 5만  5만 5만 거래소 등롭 전서버가능</td><td>22만 게임머니</td><td class='num'>150,000원</td><td class='num strong'>6,818원</td></tr><tr><td>11:32</td><td>인천</td><td class='nm'>☀️ 개인 청옥석 신속 판매 합니다 ☀️ </td><td>1만 게임머니</td><td class='num'>8,300원</td><td class='num strong'>8,300원</td></tr><tr><td>11:32</td><td>인천</td><td class='nm'>☀️ 개인 청옥석 신속 판매 합니다 ☀️ </td><td>1만 게임머니</td><td class='num'>8,300원</td><td class='num strong'>8,300원</td></tr><tr><td>12:05</td><td>전주</td><td class='nm'>개인 30만 청옥석 팔아요~~</td><td>30만 게임머니</td><td class='num'>190,000원</td><td class='num strong'>6,333원</td></tr><tr><td>13:03</td><td>부산</td><td class='nm'>✅(｡•̀ᴗ-)✧✧☎❤️분할거래★●월드거래소요●★200%안전개인━━❤️</td><td>1만 게임머니</td><td class='num'>7,800원</td><td class='num strong'>7,800원</td></tr><tr><td>15:47</td><td>대구</td><td class='nm'>✅(｡•̀ᴗ-)✧✧☎❤️분할거래★●월드거래소요●★200%안전개인━━❤️</td><td>1만 게임머니</td><td class='num'>7,800원</td><td class='num strong'>7,800원</td></tr><tr><td>16:54</td><td>전주</td><td class='nm'>개인 60만 팔아요 만당 6500원</td><td>60만 게임머니</td><td class='num'>390,000원</td><td class='num strong'>6,500원</td></tr><tr><td>20:22</td><td>인천</td><td class='nm'>⭕❤️⭕한방❤️안전 사냥다야❤️안전⭕❤️⭕</td><td>1만 게임머니</td><td class='num'>7,700원</td><td class='num strong'>7,700원</td></tr><tr><td>20:40</td><td>부산</td><td class='nm'>전서버 최저가 작업장X 개인 25만 청옥석 한방 판매합니다  (1만당 6800원)</td><td>25만 게임머니</td><td class='num'>170,000원</td><td class='num strong'>6,800원</td></tr><tr><td>20:49</td><td>광주</td><td class='nm'>10만 한방~~~~~~~~~~~~~~~~~</td><td>10만 게임머니</td><td class='num'>63,000원</td><td class='num strong'>6,300원</td></tr><tr><td>21:08</td><td>부산</td><td class='nm'>10만  게임머니 ~ 11만  게임머니 팝니다.</td><td>1만 게임머니</td><td class='num'>7,000원</td><td class='num strong'>7,000원</td></tr><tr><td>21:18</td><td>부산</td><td class='nm'>8만 청옥석 한방에 최저가 팝니다</td><td>8만 게임머니</td><td class='num'>54,000원</td><td class='num strong'>6,750원</td></tr><tr><td>21:28</td><td>한양</td><td class='nm'>개인청옥석 43000 최저가팝니다 (전섭가능합니다)</td><td>4만3,000 게임머니</td><td class='num'>24,000원</td><td class='num strong'>5,581원</td></tr><tr><td>21:58</td><td>광주</td><td class='nm'>10만 한방~~~~~~~~~~~~~~</td><td>10만 게임머니</td><td class='num'>63,000원</td><td class='num strong'>6,300원</td></tr><tr><td>22:09</td><td>전주</td><td class='nm'>8만 게임머니 팝니다.</td><td>8만 게임머니</td><td class='num'>45,000원</td><td class='num strong'>5,625원</td></tr><tr><td>22:53</td><td>한양</td><td class='nm'>전서버 30만 청옥석 팝니다. (한방 거래)</td><td>30만 게임머니</td><td class='num'>210,000원</td><td class='num strong'>7,000원</td></tr><tr><td>23:04</td><td>한양</td><td class='nm'>❤️개인 청옥석 신속 판매합니다❤️</td><td>50만 게임머니</td><td class='num'>385,000원</td><td class='num strong'>7,700원</td></tr><tr><td>23:10</td><td>전주</td><td class='nm'>개인 60만 청옥석 팝니다 전서버가능</td><td>60만 게임머니</td><td class='num'>420,000원</td><td class='num strong'>7,000원</td></tr><tr><td>23:20</td><td>부산</td><td class='nm'>⭕❤️⭕한방❤️안전 사냥다야❤️안전⭕❤️⭕</td><td>1만 게임머니</td><td class='num'>7,700원</td><td class='num strong'>7,700원</td></tr><tr><td>23:48</td><td>한양</td><td class='nm'>⭕❤️⭕한방❤️안전 사냥다야❤️안전⭕❤️⭕</td><td>1만 게임머니</td><td class='num'>7,700원</td><td class='num strong'>7,700원</td></tr></tbody>
+    </table>
+  </div>
+</details><details class="day">
+  <summary>
+    <span class="d-date">2026-06-30</span>
+    <span class="d-cnt">15건</span>
+    <span class="d-stat"><b class="lo">5,714</b> · <b class="avg">6,802</b> · <b class="hi">8,470</b> <em>원/만 (최저·평균·최고)</em></span>
+  </summary>
+  <div class="d-body">
+    <table class="inner">
+      <thead><tr><th>시각</th><th>서버</th><th>물품명</th><th>수량</th><th>거래액</th><th>만당가</th></tr></thead>
+      <tbody><tr><td>00:19</td><td>전주</td><td class='nm'>전섭가능 개인 50만(2분할) 청옥석 팝니다</td><td>50만 게임머니</td><td class='num'>340,000원</td><td class='num strong'>6,800원</td></tr><tr><td>00:48</td><td>한양</td><td class='nm'>30만 게임머니 팝니다.</td><td>30만 게임머니</td><td class='num'>200,000원</td><td class='num strong'>6,667원</td></tr><tr><td>02:37</td><td>한양</td><td class='nm'>개인청옥석 52000 최저가 팝니다 전섭 바로 거래가능!</td><td>5만2,000 게임머니</td><td class='num'>30,000원</td><td class='num strong'>5,769원</td></tr><tr><td>07:00</td><td>부산</td><td class='nm'>12만 한방판매합니당</td><td>12만 게임머니</td><td class='num'>77,000원</td><td class='num strong'>6,417원</td></tr><tr><td>09:34</td><td>한양</td><td class='nm'>접속중) 전섭 7만 청옥석 빠르게 팝니다!</td><td>7만 게임머니</td><td class='num'>40,000원</td><td class='num strong'>5,714원</td></tr><tr><td>12:09</td><td>한양</td><td class='nm'>예약 &gt;&gt;&gt; 50만 청옥석 팝니다    (빠른거래대기 ) (전서버가능)</td><td>50만 게임머니</td><td class='num'>350,000원</td><td class='num strong'>7,000원</td></tr><tr><td>12:34</td><td>전주</td><td class='nm'>40만  게임머니 팝니다.</td><td>40만 게임머니</td><td class='num'>280,000원</td><td class='num strong'>7,000원</td></tr><tr><td>17:47</td><td>부산</td><td class='nm'>개인 전섭 19만 청옥석 한방 판매합니다</td><td>19만 게임머니</td><td class='num'>133,000원</td><td class='num strong'>7,000원</td></tr><tr><td>20:25</td><td>대구</td><td class='nm'>전섭가능 3분이내접 10~80만청옥팝니다</td><td>10만 게임머니</td><td class='num'>70,000원</td><td class='num strong'>7,000원</td></tr><tr><td>21:28</td><td>부산</td><td class='nm'>개인 전섭 19만 청옥석 한방 판매합니다</td><td>19만 게임머니</td><td class='num'>133,000원</td><td class='num strong'>7,000원</td></tr><tr><td>22:12</td><td>광주</td><td class='nm'>20만 한방~~~~~~~~~~~~~~~~~~~~~</td><td>20만 게임머니</td><td class='num'>125,000원</td><td class='num strong'>6,250원</td></tr><tr><td>22:45</td><td>삼척</td><td class='nm'>⭕❤️⭕한방❤️안전 사냥다야❤️안전⭕❤️⭕</td><td>1만 게임머니</td><td class='num'>8,470원</td><td class='num strong'>8,470원</td></tr><tr><td>23:38</td><td>기타</td><td class='nm'>개인 전섭 12만 청옥석 한방 판매합니다</td><td>12만 게임머니</td><td class='num'>84,000원</td><td class='num strong'>7,000원</td></tr><tr><td>23:45</td><td>부산</td><td class='nm'>예약33</td><td>5만 게임머니</td><td class='num'>35,000원</td><td class='num strong'>7,000원</td></tr><tr><td>23:45</td><td>부산</td><td class='nm'>10만  게임머니 팝니다.</td><td>10만 게임머니</td><td class='num'>69,500원</td><td class='num strong'>6,950원</td></tr></tbody>
+    </table>
+  </div>
+</details><details class="day">
+  <summary>
+    <span class="d-date">2026-06-29</span>
+    <span class="d-cnt">8건</span>
+    <span class="d-stat"><b class="lo">6,000</b> · <b class="avg">6,664</b> · <b class="hi">7,500</b> <em>원/만 (최저·평균·최고)</em></span>
+  </summary>
+  <div class="d-body">
+    <table class="inner">
+      <thead><tr><th>시각</th><th>서버</th><th>물품명</th><th>수량</th><th>거래액</th><th>만당가</th></tr></thead>
+      <tbody><tr><td>00:52</td><td>한양</td><td class='nm'>예약</td><td>30만 게임머니</td><td class='num'>180,000원</td><td class='num strong'>6,000원</td></tr><tr><td>03:35</td><td>한양</td><td class='nm'>개인 청옥석 45000 팝니다 (02:30 현재 거래 대기중입니다! 전섭 바로 가능)</td><td>4만5,000 게임머니</td><td class='num'>28,000원</td><td class='num strong'>6,222원</td></tr><tr><td>10:06</td><td>광주</td><td class='nm'>16만 청옥석 팝니다 전섭가능</td><td>1만 게임머니</td><td class='num'>6,800원</td><td class='num strong'>6,800원</td></tr><tr><td>10:45</td><td>한양</td><td class='nm'>82000 팝니다 </td><td>8만2,000 게임머니</td><td class='num'>61,500원</td><td class='num strong'>7,500원</td></tr><tr><td>15:34</td><td>전주</td><td class='nm'>14만 게임머니 팝니다.</td><td>14만 게임머니</td><td class='num'>90,000원</td><td class='num strong'>6,429원</td></tr><tr><td>20:49</td><td>한양</td><td class='nm'>100만  게임머니 팝니다.</td><td>100만 게임머니</td><td class='num'>700,000원</td><td class='num strong'>7,000원</td></tr><tr><td>21:51</td><td>한양</td><td class='nm'>전섭 ) 10만 청옥석 팝니다.</td><td>10만 게임머니</td><td class='num'>70,000원</td><td class='num strong'>7,000원</td></tr><tr><td>23:56</td><td>전주</td><td class='nm'>11만  게임머니 팝니다.</td><td>11만 게임머니</td><td class='num'>70,000원</td><td class='num strong'>6,364원</td></tr></tbody>
+    </table>
+  </div>
+</details><details class="day">
+  <summary>
+    <span class="d-date">2026-06-28</span>
+    <span class="d-cnt">19건</span>
+    <span class="d-stat"><b class="lo">4,783</b> · <b class="avg">6,379</b> · <b class="hi">8,500</b> <em>원/만 (최저·평균·최고)</em></span>
+  </summary>
+  <div class="d-body">
+    <table class="inner">
+      <thead><tr><th>시각</th><th>서버</th><th>물품명</th><th>수량</th><th>거래액</th><th>만당가</th></tr></thead>
+      <tbody><tr><td>01:37</td><td>한양</td><td class='nm'>20만  게임머니 팝니다.</td><td>20만 게임머니</td><td class='num'>140,000원</td><td class='num strong'>7,000원</td></tr><tr><td>01:40</td><td>한양</td><td class='nm'>40만  게임머니 팝니다.</td><td>40만 게임머니</td><td class='num'>280,000원</td><td class='num strong'>7,000원</td></tr><tr><td>02:12</td><td>한양</td><td class='nm'>개인 청옥석 85000 최저가 팝니다 (새벽2시 현재 대기중)</td><td>8만5,000 게임머니</td><td class='num'>50,000원</td><td class='num strong'>5,882원</td></tr><tr><td>02:29</td><td>대구</td><td class='nm'>전섭가능 3분이내접 10~80만청옥팝니다</td><td>10만 게임머니</td><td class='num'>70,000원</td><td class='num strong'>7,000원</td></tr><tr><td>03:31</td><td>한양</td><td class='nm'>전 서버 가능합니다</td><td>20만 게임머니</td><td class='num'>140,000원</td><td class='num strong'>7,000원</td></tr><tr><td>07:28</td><td>부산</td><td class='nm'>2만2천 청옥석 판매</td><td>2만2,000 게임머니</td><td class='num'>12,000원</td><td class='num strong'>5,455원</td></tr><tr><td>07:44</td><td>한양</td><td class='nm'>2만3,000 게임머니 팝니다.</td><td>2만3,000 게임머니</td><td class='num'>11,000원</td><td class='num strong'>4,783원</td></tr><tr><td>14:47</td><td>한양</td><td class='nm'>[최저가] 개인사냥 22만 청옥석 팝니다. </td><td>22만 게임머니</td><td class='num'>140,000원</td><td class='num strong'>6,364원</td></tr><tr><td>15:35</td><td>기타</td><td class='nm'>42만 청옥석 팔고 접어요, 최저가</td><td>1만 게임머니</td><td class='num'>6,500원</td><td class='num strong'>6,500원</td></tr><tr><td>16:53</td><td>부산</td><td class='nm'>청옥석 개인유저 아이템판매</td><td>1만 게임머니</td><td class='num'>8,500원</td><td class='num strong'>8,500원</td></tr><tr><td>17:02</td><td>광주</td><td class='nm'>10만 한방~~~~~~~~~~~~~~~</td><td>10만 게임머니</td><td class='num'>60,000원</td><td class='num strong'>6,000원</td></tr><tr><td>17:02</td><td>광주</td><td class='nm'>20만 한방~~~~~~~~~~~~~~~~</td><td>20만 게임머니</td><td class='num'>120,000원</td><td class='num strong'>6,000원</td></tr><tr><td>18:59</td><td>한양</td><td class='nm'>11만 청옥석 최저가 팝니다</td><td>11만 게임머니</td><td class='num'>68,000원</td><td class='num strong'>6,182원</td></tr><tr><td>19:39</td><td>한양</td><td class='nm'>10만청옥석 팝니다</td><td>10만 게임머니</td><td class='num'>65,000원</td><td class='num strong'>6,500원</td></tr><tr><td>20:28</td><td>기타</td><td class='nm'>순수 파밍 청옥 12만 일괄 판매 합니다!</td><td>12만 게임머니</td><td class='num'>72,000원</td><td class='num strong'>6,000원</td></tr><tr><td>21:04</td><td>한양</td><td class='nm'>10만 청옥석 판매합니다</td><td>10만 게임머니</td><td class='num'>65,000원</td><td class='num strong'>6,500원</td></tr><tr><td>21:47</td><td>기타</td><td class='nm'>30만 팝니다 바로가능</td><td>30만 게임머니</td><td class='num'>190,000원</td><td class='num strong'>6,333원</td></tr><tr><td>22:44</td><td>기타</td><td class='nm'>개인35만 팝니다 바로가능</td><td>35만 게임머니</td><td class='num'>210,000원</td><td class='num strong'>6,000원</td></tr><tr><td>23:30</td><td>광주</td><td class='nm'>10만 한방~~~~~~~~~~~~</td><td>10만 게임머니</td><td class='num'>62,000원</td><td class='num strong'>6,200원</td></tr></tbody>
+    </table>
+  </div>
+</details><details class="day">
+  <summary>
+    <span class="d-date">2026-06-27</span>
+    <span class="d-cnt">17건</span>
+    <span class="d-stat"><b class="lo">5,902</b> · <b class="avg">7,015</b> · <b class="hi">8,470</b> <em>원/만 (최저·평균·최고)</em></span>
+  </summary>
+  <div class="d-body">
+    <table class="inner">
+      <thead><tr><th>시각</th><th>서버</th><th>물품명</th><th>수량</th><th>거래액</th><th>만당가</th></tr></thead>
+      <tbody><tr><td>06:30</td><td>인천</td><td class='nm'>4만5,000 게임머니 팝니다.</td><td>4만5,000 게임머니</td><td class='num'>31,000원</td><td class='num strong'>6,889원</td></tr><tr><td>09:25</td><td>한양</td><td class='nm'>8만  게임머니 팝니다.</td><td>8만 게임머니</td><td class='num'>60,000원</td><td class='num strong'>7,500원</td></tr><tr><td>10:54</td><td>한양</td><td class='nm'>20만 청옥석 거래소 한방거래 전섭가능</td><td>20만 게임머니</td><td class='num'>140,000원</td><td class='num strong'>7,000원</td></tr><tr><td>10:55</td><td>부산</td><td class='nm'>7.5만 청옥 팝니다 </td><td>7만5,000 게임머니</td><td class='num'>52,500원</td><td class='num strong'>7,000원</td></tr><tr><td>13:54</td><td>한양</td><td class='nm'>전섭 ) 20만 청옥석 팝니다.</td><td>20만 게임머니</td><td class='num'>140,000원</td><td class='num strong'>7,000원</td></tr><tr><td>14:34</td><td>인천</td><td class='nm'>13만 청옥석 팝니다</td><td>13만 게임머니</td><td class='num'>104,000원</td><td class='num strong'>8,000원</td></tr><tr><td>15:42</td><td>한양</td><td class='nm'>접속중) 전서버 105만 청옥석 팝니다</td><td>105만 게임머니</td><td class='num'>700,000원</td><td class='num strong'>6,667원</td></tr><tr><td>15:55</td><td>한양</td><td class='nm'>20만 청옥석 한방에 팝니다.(전 서버 가능)</td><td>20만 게임머니</td><td class='num'>140,000원</td><td class='num strong'>7,000원</td></tr><tr><td>16:19</td><td>한양</td><td class='nm'>20만 청옥석 거래소 분할거래</td><td>20만 게임머니</td><td class='num'>140,000원</td><td class='num strong'>7,000원</td></tr><tr><td>16:43</td><td>한양</td><td class='nm'>전서버&gt; 청옥석 20만 한방 팝니다</td><td>20만 게임머니</td><td class='num'>140,000원</td><td class='num strong'>7,000원</td></tr><tr><td>16:43</td><td>부산</td><td class='nm'>⭕❤️⭕한방❤️안전 사냥다야❤️안전⭕❤️⭕</td><td>1만 게임머니</td><td class='num'>8,470원</td><td class='num strong'>8,470원</td></tr><tr><td>17:04</td><td>한양</td><td class='nm'>30만청옥석 최저가 팝니다</td><td>30만 게임머니</td><td class='num'>190,000원</td><td class='num strong'>6,333원</td></tr><tr><td>17:34</td><td>대구</td><td class='nm'>10만 게임머니 팝니다.</td><td>10만 게임머니</td><td class='num'>70,000원</td><td class='num strong'>7,000원</td></tr><tr><td>17:40</td><td>한양</td><td class='nm'>순수 사냥 머니! 111,000 청옥석 팝니다! 한방거래! 만당 6500원꼴! 최저가</td><td>11만 게임머니</td><td class='num'>71,500원</td><td class='num strong'>6,500원</td></tr><tr><td>18:21</td><td>한양</td><td class='nm'>10만 게임머니 팝니다.</td><td>10만 게임머니</td><td class='num'>70,000원</td><td class='num strong'>7,000원</td></tr><tr><td>23:37</td><td>한양</td><td class='nm'>(전섭) 10만 청옥성 한방에 팝니다(게임 접속중)</td><td>10만 게임머니</td><td class='num'>70,000원</td><td class='num strong'>7,000원</td></tr><tr><td>23:38</td><td>한양</td><td class='nm'>개인 청옥석 61000 최저가 팝니다 (전섭바로거래가능)</td><td>6만1,000 게임머니</td><td class='num'>36,000원</td><td class='num strong'>5,902원</td></tr></tbody>
+    </table>
+  </div>
+</details><details class="day">
+  <summary>
+    <span class="d-date">2026-06-26</span>
+    <span class="d-cnt">5건</span>
+    <span class="d-stat"><b class="lo">5,000</b> · <b class="avg">6,794</b> · <b class="hi">7,429</b> <em>원/만 (최저·평균·최고)</em></span>
+  </summary>
+  <div class="d-body">
+    <table class="inner">
+      <thead><tr><th>시각</th><th>서버</th><th>물품명</th><th>수량</th><th>거래액</th><th>만당가</th></tr></thead>
+      <tbody><tr><td>10:15</td><td>한양</td><td class='nm'>개인 14만 청옥석 팔아요~</td><td>14만 게임머니</td><td class='num'>100,000원</td><td class='num strong'>7,143원</td></tr><tr><td>12:27</td><td>한양</td><td class='nm'>10만</td><td>10만 게임머니</td><td class='num'>74,000원</td><td class='num strong'>7,400원</td></tr><tr><td>17:12</td><td>부산</td><td class='nm'>11만 한방판매합니다</td><td>11만 게임머니</td><td class='num'>77,000원</td><td class='num strong'>7,000원</td></tr><tr><td>18:10</td><td>한양</td><td class='nm'>2분할 5만4천 판매 떨이합니다</td><td>5만4,000 게임머니</td><td class='num'>27,000원</td><td class='num strong'>5,000원</td></tr><tr><td>23:28</td><td>부산</td><td class='nm'>7만 게임머니 팝니다.</td><td>7만 게임머니</td><td class='num'>52,000원</td><td class='num strong'>7,429원</td></tr></tbody>
+    </table>
+  </div>
+</details><details class="day">
+  <summary>
+    <span class="d-date">2026-06-25</span>
+    <span class="d-cnt">10건</span>
+    <span class="d-stat"><b class="lo">6,333</b> · <b class="avg">7,276</b> · <b class="hi">7,800</b> <em>원/만 (최저·평균·최고)</em></span>
+  </summary>
+  <div class="d-body">
+    <table class="inner">
+      <thead><tr><th>시각</th><th>서버</th><th>물품명</th><th>수량</th><th>거래액</th><th>만당가</th></tr></thead>
+      <tbody><tr><td>00:47</td><td>한양</td><td class='nm'>개인5만청옥석팝니다 즉시가능 한방</td><td>5만 게임머니</td><td class='num'>35,000원</td><td class='num strong'>7,000원</td></tr><tr><td>13:31</td><td>한양</td><td class='nm'>19만5,000  게임머니 팝니다.</td><td>19만5,000 게임머니</td><td class='num'>150,000원</td><td class='num strong'>7,692원</td></tr><tr><td>18:21</td><td>충주</td><td class='nm'>5만  게임머니 팝니다.</td><td>5만 게임머니</td><td class='num'>35,000원</td><td class='num strong'>7,000원</td></tr><tr><td>18:21</td><td>대구</td><td class='nm'>개인 사냥 8만 청옥석 팝니다.</td><td>8만 게임머니</td><td class='num'>62,000원</td><td class='num strong'>7,750원</td></tr><tr><td>18:22</td><td>광주</td><td class='nm'>7만  게임머니 팝니다.</td><td>7만 게임머니</td><td class='num'>50,000원</td><td class='num strong'>7,143원</td></tr><tr><td>19:33</td><td>충주</td><td class='nm'>6만  게임머니 팝니다.</td><td>6만 게임머니</td><td class='num'>43,000원</td><td class='num strong'>7,167원</td></tr><tr><td>20:12</td><td>한양</td><td class='nm'>16만 게임머니 팝니다</td><td>16만 게임머니</td><td class='num'>118,000원</td><td class='num strong'>7,375원</td></tr><tr><td>20:42</td><td>대구</td><td class='nm'>10만청옥석 팝니다</td><td>10만 게임머니</td><td class='num'>78,000원</td><td class='num strong'>7,800원</td></tr><tr><td>20:52</td><td>전주</td><td class='nm'>10만 게임머니 팝니다.</td><td>10만 게임머니</td><td class='num'>75,000원</td><td class='num strong'>7,500원</td></tr><tr><td>22:44</td><td>전주</td><td class='nm'>개인 사냥 15만 팝니다</td><td>15만 게임머니</td><td class='num'>95,000원</td><td class='num strong'>6,333원</td></tr></tbody>
+    </table>
+  </div>
+</details><details class="day">
+  <summary>
+    <span class="d-date">2026-06-24</span>
+    <span class="d-cnt">12건</span>
+    <span class="d-stat"><b class="lo">7,000</b> · <b class="avg">8,046</b> · <b class="hi">9,000</b> <em>원/만 (최저·평균·최고)</em></span>
+  </summary>
+  <div class="d-body">
+    <table class="inner">
+      <thead><tr><th>시각</th><th>서버</th><th>물품명</th><th>수량</th><th>거래액</th><th>만당가</th></tr></thead>
+      <tbody><tr><td>00:34</td><td>한양</td><td class='nm'>10만청옥석팝니다 </td><td>10만 게임머니</td><td class='num'>79,000원</td><td class='num strong'>7,900원</td></tr><tr><td>00:56</td><td>부산</td><td class='nm'>✅(｡•̀ᴗ-)✧✧☎❤️분할거래★●월드거래소요●★200%안전개인━━❤️</td><td>1만 게임머니</td><td class='num'>8,900원</td><td class='num strong'>8,900원</td></tr><tr><td>12:28</td><td>인천</td><td class='nm'>10만  게임머니 팝니다.</td><td>10만 게임머니</td><td class='num'>80,000원</td><td class='num strong'>8,000원</td></tr><tr><td>12:40</td><td>한양</td><td class='nm'>❤️개인 청옥석 신속 판매합니다❤️</td><td>150만 게임머니</td><td class='num'>1,215,000원</td><td class='num strong'>8,100원</td></tr><tr><td>13:32</td><td>대구</td><td class='nm'>개인 12만 청옥석 판매합니다</td><td>1만 게임머니</td><td class='num'>8,000원</td><td class='num strong'>8,000원</td></tr><tr><td>14:25</td><td>전주</td><td class='nm'>30만 청옥석팝니다 예약</td><td>30만 게임머니</td><td class='num'>230,000원</td><td class='num strong'>7,667원</td></tr><tr><td>14:39</td><td>한양</td><td class='nm'>12만 청옥석팝니다. 전섭가능 2분할 개인초스피드</td><td>12만 게임머니</td><td class='num'>90,000원</td><td class='num strong'>7,500원</td></tr><tr><td>15:41</td><td>부산</td><td class='nm'>부산섭) 개인유저 20만 청옥 팝니다. 접속중 바로 확인 가능 빠른 거래</td><td>10만 게임머니</td><td class='num'>85,000원</td><td class='num strong'>8,500원</td></tr><tr><td>19:12</td><td>부산</td><td class='nm'>청옥석 개인 아이템판매</td><td>1만 게임머니</td><td class='num'>9,000원</td><td class='num strong'>9,000원</td></tr><tr><td>20:03</td><td>광주</td><td class='nm'>@@ 10만 청옥석 팝니다 @@</td><td>10만 게임머니</td><td class='num'>70,000원</td><td class='num strong'>7,000원</td></tr><tr><td>20:44</td><td>부산</td><td class='nm'>⭕❤️⭕한방❤️안전 사냥다야❤️안전⭕❤️⭕</td><td>20만 게임머니</td><td class='num'>179,600원</td><td class='num strong'>8,980원</td></tr><tr><td>23:06</td><td>기타</td><td class='nm'>예약 건</td><td>100만 게임머니</td><td class='num'>700,000원</td><td class='num strong'>7,000원</td></tr></tbody>
+    </table>
+  </div>
+</details><details class="day">
+  <summary>
+    <span class="d-date">2026-06-23</span>
+    <span class="d-cnt">19건</span>
+    <span class="d-stat"><b class="lo">6,250</b> · <b class="avg">7,627</b> · <b class="hi">8,440</b> <em>원/만 (최저·평균·최고)</em></span>
+  </summary>
+  <div class="d-body">
+    <table class="inner">
+      <thead><tr><th>시각</th><th>서버</th><th>물품명</th><th>수량</th><th>거래액</th><th>만당가</th></tr></thead>
+      <tbody><tr><td>00:00</td><td>한양</td><td class='nm'>20만  게임머니 팝니다.</td><td>20만 게임머니</td><td class='num'>160,000원</td><td class='num strong'>8,000원</td></tr><tr><td>00:00</td><td>한양</td><td class='nm'>30만  게임머니 팝니다.</td><td>30만 게임머니</td><td class='num'>240,000원</td><td class='num strong'>8,000원</td></tr><tr><td>00:06</td><td>한양</td><td class='nm'>60만 청옥석 팝니다 (빠른거래 대기)  (천당 8000)</td><td>59만 게임머니</td><td class='num'>472,000원</td><td class='num strong'>8,000원</td></tr><tr><td>00:19</td><td>대구</td><td class='nm'>3만개 팝니다.</td><td>3만 게임머니</td><td class='num'>24,000원</td><td class='num strong'>8,000원</td></tr><tr><td>05:36</td><td>인천</td><td class='nm'>1만6,000 게임머니 팝니다.</td><td>1만6,000 게임머니</td><td class='num'>10,000원</td><td class='num strong'>6,250원</td></tr><tr><td>09:38</td><td>경주</td><td class='nm'>@20만청옥 한방거래@ 10청옥 75000</td><td>20만 게임머니</td><td class='num'>150,000원</td><td class='num strong'>7,500원</td></tr><tr><td>10:59</td><td>경주</td><td class='nm'>@11만청옥 팝니다@  10만청옥 75000원</td><td>11만 게임머니</td><td class='num'>82,500원</td><td class='num strong'>7,500원</td></tr><tr><td>11:01</td><td>한양</td><td class='nm'>[빠른대기중] 노가다 청옥석 19만 한방거래합니다. [전섭가능]</td><td>19만 게임머니</td><td class='num'>150,000원</td><td class='num strong'>7,895원</td></tr><tr><td>14:16</td><td>전주</td><td class='nm'>30만  게임머니 팝니다.</td><td>30만 게임머니</td><td class='num'>240,000원</td><td class='num strong'>8,000원</td></tr><tr><td>15:37</td><td>한양</td><td class='nm'>123123</td><td>200만 게임머니</td><td class='num'>1,580,000원</td><td class='num strong'>7,900원</td></tr><tr><td>16:12</td><td>부산</td><td class='nm'>⭕❤️⭕한방❤️안전 사냥다야❤️안전⭕❤️⭕</td><td>10만 게임머니</td><td class='num'>84,400원</td><td class='num strong'>8,440원</td></tr><tr><td>17:03</td><td>한양</td><td class='nm'>❤️개인 청옥석 신속 판매합니다❤️</td><td>15만 게임머니</td><td class='num'>105,000원</td><td class='num strong'>7,000원</td></tr><tr><td>17:31</td><td>부산</td><td class='nm'>⭕❤️⭕한방❤️안전 사냥다야❤️안전⭕❤️⭕</td><td>15만 게임머니</td><td class='num'>126,600원</td><td class='num strong'>8,440원</td></tr><tr><td>17:42</td><td>한양</td><td class='nm'>17만 청옥 만당 8000원에 팔아요 </td><td>17만 게임머니</td><td class='num'>136,000원</td><td class='num strong'>8,000원</td></tr><tr><td>19:53</td><td>충주</td><td class='nm'>10만 청옥석 한방거래</td><td>10만 게임머니</td><td class='num'>75,000원</td><td class='num strong'>7,500원</td></tr><tr><td>20:40</td><td>대구</td><td class='nm'>개인 한방 5만 청옥석 팔아요~~ </td><td>5만 게임머니</td><td class='num'>37,000원</td><td class='num strong'>7,400원</td></tr><tr><td>21:07</td><td>한양</td><td class='nm'>8만 게임머니 팝니다.</td><td>8만 게임머니</td><td class='num'>60,000원</td><td class='num strong'>7,500원</td></tr><tr><td>22:22</td><td>인천</td><td class='nm'>7만청옥석 한방에 팝니다</td><td>7만 게임머니</td><td class='num'>50,000원</td><td class='num strong'>7,143원</td></tr><tr><td>23:52</td><td>한양</td><td class='nm'>31000 팝니다</td><td>3만1,000 게임머니</td><td class='num'>20,000원</td><td class='num strong'>6,452원</td></tr></tbody>
+    </table>
+  </div>
+</details><details class="day">
+  <summary>
+    <span class="d-date">2026-06-22</span>
+    <span class="d-cnt">8건</span>
+    <span class="d-stat"><b class="lo">6,723</b> · <b class="avg">7,392</b> · <b class="hi">7,700</b> <em>원/만 (최저·평균·최고)</em></span>
+  </summary>
+  <div class="d-body">
+    <table class="inner">
+      <thead><tr><th>시각</th><th>서버</th><th>물품명</th><th>수량</th><th>거래액</th><th>만당가</th></tr></thead>
+      <tbody><tr><td>07:31</td><td>한양</td><td class='nm'>11만9천 청옥석떨이  판매 최저가 2분할</td><td>11만9,000 게임머니</td><td class='num'>80,000원</td><td class='num strong'>6,723원</td></tr><tr><td>09:45</td><td>한양</td><td class='nm'>6만 게임머니 팝니다.</td><td>6만 게임머니</td><td class='num'>45,000원</td><td class='num strong'>7,500원</td></tr><tr><td>11:24</td><td>부산</td><td class='nm'>61000 청옥석 한방에 팝니다</td><td>6만1,000 게임머니</td><td class='num'>44,000원</td><td class='num strong'>7,213원</td></tr><tr><td>11:46</td><td>한양</td><td class='nm'>5만 게임머니 팝니다.</td><td>5만 게임머니</td><td class='num'>37,500원</td><td class='num strong'>7,500원</td></tr><tr><td>16:00</td><td>부산</td><td class='nm'>10만 한방판매합니다</td><td>10만 게임머니</td><td class='num'>77,000원</td><td class='num strong'>7,700원</td></tr><tr><td>20:00</td><td>부산</td><td class='nm'>@최저가@ 6만청옥팝니다 전섭가능 즉시거래</td><td>6만 게임머니</td><td class='num'>45,000원</td><td class='num strong'>7,500원</td></tr><tr><td>20:55</td><td>한양</td><td class='nm'>[최저가] 개인사냥 34만 청옥석 팝니다. </td><td>34만 게임머니</td><td class='num'>255,000원</td><td class='num strong'>7,500원</td></tr><tr><td>23:03</td><td>한양</td><td class='nm'>예약</td><td>5만 게임머니</td><td class='num'>37,500원</td><td class='num strong'>7,500원</td></tr></tbody>
+    </table>
+  </div>
+</details>
+  </section>
+
+  <section>
+    <h2>거래가능 매물(호가) 일자별 스냅샷</h2>
+    <p class="sub">매시간 기준 판매중 매물 (하루 여러 번 갱신 시 최신값)</p>
+    <table>
+      <thead><tr><th>날짜</th><th>기준시각</th><th>평균가</th><th>중앙값</th><th>최저</th><th>최고</th><th>매물수</th></tr></thead>
+      <tbody>
+<tr><td>2026-07-02</td><td>11:57</td><td class='num strong'>8,069원</td><td class='num'>8,200원</td><td class='num lo'>6,000원</td><td class='num hi'>9,091원</td><td class='num'>108건</td></tr>
+
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    데이터 출처: <a href="https://www.barotem.com/product/lists/2382r973?page=1&sell=sell&display=1&orderby=1" target="_blank">바로템 - 임진왜란:조선의 반격 게임머니</a><br>
+    매시간 자동 갱신 · 페이지 생성 시각: 2026-07-02 11:57<br>
+    ※ 만(10,000)게임머니당 단가 = 일괄/분할 판매단위 정규화 후 산출<br>
+    ※ 거래완료 날짜는 사이트가 체결일시를 제공하지 않아 매물 등록일(reg_date) 기준이며, 완료 매물은 매일 중복 제거하여 누적합니다.
+  </footer>
+</div>
+</body>
+</html>
