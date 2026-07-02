@@ -24,9 +24,35 @@
   .card .t{font-size:13px;color:var(--muted);} .card .v{font-size:19px;font-weight:700;margin-top:4px;}
   section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin:18px 0;}
   section h2{font-size:16px;margin:0 0 4px;} section .sub{font-size:12.5px;color:var(--muted);margin:0 0 14px;}
-  .chart{display:block;} .axl{font-size:11px;fill:#9ca3af;} .barl{font-size:9.5px;fill:#64748b;text-anchor:middle;}
-  .legend{display:flex;gap:16px;justify-content:center;margin-top:6px;font-size:12.5px;color:#4b5563;}
-  .legend .lg{display:inline-flex;align-items:center;gap:5px;} .legend i{width:14px;height:3px;border-radius:2px;display:inline-block;}
+  .axl{font-size:11px;fill:#9ca3af;}
+  .legend{display:flex;gap:16px;justify-content:center;margin-top:10px;font-size:12.5px;color:#4b5563;flex-wrap:wrap;}
+  .legend .lg{display:inline-flex;align-items:center;gap:5px;} .legend i{width:16px;height:3px;border-radius:2px;display:inline-block;}
+  .legend i.dash{background-image:repeating-linear-gradient(90deg,currentColor 0,currentColor 4px,transparent 4px,transparent 7px)!important;}
+  /* 인터랙티브 차트 */
+  .chartbox{position:relative;}
+  #cchart{cursor:crosshair;}
+  .v-bar{fill:#94a3b8;fill-opacity:.42;transform-box:fill-box;transform-origin:bottom;animation:vGrow .6s cubic-bezier(.2,.85,.25,1) both var(--d);transition:fill-opacity .15s,fill .15s;}
+  .v-bar.on{fill:#2563eb;fill-opacity:.55;}
+  .v-band{fill:#2563eb;opacity:.11;animation:vFadeBand 1s ease both .25s;}
+  .v-max{stroke:#f97316;stroke-width:1.5;stroke-dasharray:5 3;opacity:1;animation:vFade .9s ease both .35s;}
+  .v-min{stroke:#0ea5e9;stroke-width:1.5;stroke-dasharray:5 3;opacity:1;animation:vFade .9s ease both .45s;}
+  .v-avg{stroke:#2563eb;stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round;filter:drop-shadow(0 2px 3px rgba(37,99,235,.25));}
+  .v-pt{fill:#2563eb;transform-box:fill-box;transform-origin:center;animation:vPop .45s ease-out both var(--d);}
+  .v-pulse{fill:none;stroke:#2563eb;stroke-width:2;animation:vPulse 2.2s ease-out infinite 1.3s;}
+  .v-guide{stroke:#64748b;stroke-width:1;stroke-dasharray:3 3;pointer-events:none;transition:opacity .1s;}
+  .v-hpt{fill:#2563eb;stroke:#fff;stroke-width:2.5;pointer-events:none;transition:opacity .1s;filter:drop-shadow(0 2px 4px rgba(37,99,235,.5));}
+  .v-hit{cursor:crosshair;}
+  @keyframes vGrow{from{transform:scaleY(0);}to{transform:scaleY(1);}}
+  @keyframes vFadeBand{from{opacity:0;}to{opacity:.11;}}
+  @keyframes vFade{from{opacity:0;}to{opacity:1;}}
+  @keyframes vPop{0%{transform:scale(0);opacity:0;}60%{transform:scale(1.35);}100%{transform:scale(1);opacity:1;}}
+  @keyframes vPulse{0%{r:4;opacity:.55;}70%{r:15;opacity:0;}100%{r:15;opacity:0;}}
+  .tip{position:absolute;z-index:9;pointer-events:none;background:rgba(15,23,42,.95);color:#fff;border-radius:9px;padding:8px 11px;font-size:12.5px;box-shadow:0 8px 24px rgba(0,0,0,.28);min-width:132px;transition:left .05s linear,top .05s linear;}
+  .tip[hidden]{display:none;}
+  .tip .td{font-weight:700;margin-bottom:5px;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,.16);}
+  .tip .tr{display:flex;justify-content:space-between;gap:14px;line-height:1.75;}
+  .tip .k{opacity:.9;} .tip .k.hi{color:#fdba74;} .tip .k.avg{color:#93c5fd;} .tip .k.lo{color:#7dd3fc;}
+  @media(prefers-reduced-motion:reduce){.v-bar,.v-band,.v-max,.v-min,.v-pt,.v-pulse{animation:none;} .v-avg{transition:none!important;}}
   table{width:100%;border-collapse:collapse;font-size:14px;}
   th,td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:center;}
   th{background:#f9fafb;color:#374151;font-weight:600;}
@@ -67,13 +93,13 @@
 
   <div class="hero">
     <div class="label">현재 거래가능 매물(호가) 평균가</div>
-    <div class="price">8,069<span class="unit"> 원 / 만</span></div>
+    <div class="price">8,067<span class="unit"> 원 / 만</span></div>
     <div class="diff"></div>
-    <div style="margin-top:10px;"><small>기준: 2026-07-02 11:57 · 거래가능 매물 108건</small></div>
+    <div style="margin-top:10px;"><small>기준: 2026-07-02 13:44 · 거래가능 매물 109건</small></div>
   </div>
 
   <div class="cards">
-    <div class="card"><div class="t">평균가</div><div class="v">8,069원</div></div>
+    <div class="card"><div class="t">평균가</div><div class="v">8,067원</div></div>
     <div class="card"><div class="t">중앙값</div><div class="v">8,200원</div></div>
     <div class="card"><div class="t">최저 호가</div><div class="v">6,000원</div></div>
     <div class="card"><div class="t">최고 호가</div><div class="v">9,091원</div></div>
@@ -82,22 +108,97 @@
   <section>
     <h2>거래완료(체결) 일별 시세 추이</h2>
     <p class="sub">실제 거래 종료된 매물 기준 · 일자별 최저 / 평균 / 최고 체결가</p>
-    <svg viewBox='0 0 760 240' width='100%' preserveAspectRatio='xMidYMid meet' class='chart'>
-  <line x1='46' y1='194' x2='714' y2='194' stroke='#d1d5db'/>
-  <line x1='46' y1='46' x2='46' y2='194' stroke='#d1d5db'/>
-  <text x='6' y='50' class='axl'>9,000</text>
-  <text x='6' y='194' class='axl'>4,783</text>
-  <rect x='38.0' y='161.7' width='16.0' height='32.3' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-22 거래 8건</title></rect><rect x='104.8' y='117.3' width='16.0' height='76.7' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-23 거래 19건</title></rect><rect x='171.6' y='145.6' width='16.0' height='48.4' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-24 거래 12건</title></rect><rect x='238.4' y='153.6' width='16.0' height='40.4' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-25 거래 10건</title></rect><rect x='305.2' y='173.8' width='16.0' height='20.2' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-26 거래 5건</title></rect><rect x='372.0' y='125.4' width='16.0' height='68.6' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-27 거래 17건</title></rect><rect x='438.8' y='117.3' width='16.0' height='76.7' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-28 거래 19건</title></rect><rect x='505.6' y='161.7' width='16.0' height='32.3' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-29 거래 8건</title></rect><rect x='572.4' y='133.5' width='16.0' height='60.5' fill='#94a3b8' fill-opacity='0.45'><title>2026-06-30 거래 15건</title></rect><rect x='639.2' y='93.1' width='16.0' height='100.9' fill='#94a3b8' fill-opacity='0.45'><title>2026-07-01 거래 25건</title></rect><rect x='706.0' y='185.9' width='16.0' height='8.1' fill='#94a3b8' fill-opacity='0.45'><title>2026-07-02 거래 2건</title></rect>
-  <text x='46.0' y='158.7' class='barl'>8</text><text x='112.8' y='114.3' class='barl'>19</text><text x='179.6' y='142.6' class='barl'>12</text><text x='246.4' y='150.6' class='barl'>10</text><text x='313.2' y='170.8' class='barl'>5</text><text x='380.0' y='122.4' class='barl'>17</text><text x='446.8' y='114.3' class='barl'>19</text><text x='513.6' y='158.7' class='barl'>8</text><text x='580.4' y='130.5' class='barl'>15</text><text x='647.2' y='90.1' class='barl'>25</text><text x='714.0' y='182.9' class='barl'>2</text>
-  <polygon points='46.0,91.6 112.8,65.7 179.6,46.0 246.4,88.1 313.2,101.1 380.0,64.6 446.8,63.5 513.6,98.6 580.4,64.6 647.2,70.6 714.0,116.2 714.0,127.9 647.2,168.8 580.4,161.3 513.6,151.3 446.8,194.0 380.0,154.7 313.2,186.4 246.4,139.6 179.6,116.2 112.8,142.5 46.0,125.9' fill='#2563eb' fill-opacity='0.10'/>
-  <polyline points='46.0,91.6 112.8,65.7 179.6,46.0 246.4,88.1 313.2,101.1 380.0,64.6 446.8,63.5 513.6,98.6 580.4,64.6 647.2,70.6 714.0,116.2' fill='none' stroke='#f97316' stroke-width='1.4' stroke-dasharray='4 3'/>
-  <polyline points='46.0,125.9 112.8,142.5 179.6,116.2 246.4,139.6 313.2,186.4 380.0,154.7 446.8,194.0 513.6,151.3 580.4,161.3 647.2,168.8 714.0,127.9' fill='none' stroke='#0ea5e9' stroke-width='1.4' stroke-dasharray='4 3'/>
-  <polyline points='46.0,102.4 112.8,94.2 179.6,79.5 246.4,106.5 313.2,123.4 380.0,115.7 446.8,138.0 513.6,128.0 580.4,123.1 647.2,119.4 714.0,122.0' fill='none' stroke='#2563eb' stroke-width='2.5'/>
-  <circle cx='46.0' cy='102.4' r='3' fill='#2563eb'><title>2026-06-22  최저 6,723 / 평균 7,392 / 최고 7,700원 (8건)</title></circle><circle cx='112.8' cy='94.2' r='3' fill='#2563eb'><title>2026-06-23  최저 6,250 / 평균 7,627 / 최고 8,440원 (19건)</title></circle><circle cx='179.6' cy='79.5' r='3' fill='#2563eb'><title>2026-06-24  최저 7,000 / 평균 8,046 / 최고 9,000원 (12건)</title></circle><circle cx='246.4' cy='106.5' r='3' fill='#2563eb'><title>2026-06-25  최저 6,333 / 평균 7,276 / 최고 7,800원 (10건)</title></circle><circle cx='313.2' cy='123.4' r='3' fill='#2563eb'><title>2026-06-26  최저 5,000 / 평균 6,794 / 최고 7,429원 (5건)</title></circle><circle cx='380.0' cy='115.7' r='3' fill='#2563eb'><title>2026-06-27  최저 5,902 / 평균 7,015 / 최고 8,470원 (17건)</title></circle><circle cx='446.8' cy='138.0' r='3' fill='#2563eb'><title>2026-06-28  최저 4,783 / 평균 6,379 / 최고 8,500원 (19건)</title></circle><circle cx='513.6' cy='128.0' r='3' fill='#2563eb'><title>2026-06-29  최저 6,000 / 평균 6,664 / 최고 7,500원 (8건)</title></circle><circle cx='580.4' cy='123.1' r='3' fill='#2563eb'><title>2026-06-30  최저 5,714 / 평균 6,802 / 최고 8,470원 (15건)</title></circle><circle cx='647.2' cy='119.4' r='3' fill='#2563eb'><title>2026-07-01  최저 5,500 / 평균 6,910 / 최고 8,300원 (25건)</title></circle><circle cx='714.0' cy='122.0' r='3' fill='#2563eb'><title>2026-07-02  최저 6,667 / 평균 6,834 / 최고 7,000원 (2건)</title></circle>
-  <text x='46' y='232' class='axl'>2026-06-22</text>
-  <text x='714' y='232' class='axl' text-anchor='end'>2026-07-02</text>
-</svg>
-<div class='legend'><span class='lg'><i style='background:#2563eb'></i>평균 체결가</span><span class='lg'><i style='background:#f97316'></i>최고가</span><span class='lg'><i style='background:#0ea5e9'></i>최저가</span><span class='lg'><i style='background:#94a3b8;width:10px;height:10px;border-radius:2px'></i>거래건수</span></div>
+    <div class="chartbox" id="cbox">
+  <div class="tip" id="ctip" hidden></div>
+  <svg id="cchart" viewBox="0 0 760 260" width="100%" preserveAspectRatio="xMidYMid meet" style="display:block;overflow:visible"></svg>
+</div>
+<div class="legend"><span class="lg"><i style="background:#2563eb"></i>평균 체결가</span><span class="lg"><i class="dash" style="background:#f97316"></i>최고가</span><span class="lg"><i class="dash" style="background:#0ea5e9"></i>최저가</span><span class="lg"><i style="background:#94a3b8;width:10px;height:10px;border-radius:2px"></i>거래건수</span></div>
+<script>
+(function(){
+  var DATA = [{"d":"2026-06-22","min":6723,"avg":7392,"max":7700,"cnt":8},{"d":"2026-06-23","min":6250,"avg":7627,"max":8440,"cnt":19},{"d":"2026-06-24","min":7000,"avg":8046,"max":9000,"cnt":12},{"d":"2026-06-25","min":6333,"avg":7276,"max":7800,"cnt":10},{"d":"2026-06-26","min":5000,"avg":6794,"max":7429,"cnt":5},{"d":"2026-06-27","min":5902,"avg":7015,"max":8470,"cnt":17},{"d":"2026-06-28","min":4783,"avg":6379,"max":8500,"cnt":19},{"d":"2026-06-29","min":6000,"avg":6664,"max":7500,"cnt":8},{"d":"2026-06-30","min":5714,"avg":6802,"max":8470,"cnt":15},{"d":"2026-07-01","min":5500,"avg":6910,"max":8300,"cnt":25},{"d":"2026-07-02","min":6667,"avg":6834,"max":7000,"cnt":2}];
+  var box=document.getElementById('cbox'), svg=document.getElementById('cchart'), tip=document.getElementById('ctip');
+  if(!DATA || DATA.length<2) return;
+  var NS='http://www.w3.org/2000/svg';
+  var W=760,H=260,pl=54,pr=18,ptp=18,pb=42, pw=W-pl-pr, ph=H-ptp-pb, n=DATA.length;
+  var lo=Math.min.apply(null,DATA.map(function(o){return o.min;}));
+  var hi=Math.max.apply(null,DATA.map(function(o){return o.max;}));
+  var padv=(hi-lo)*0.14||1; lo=Math.max(0,lo-padv); hi=hi+padv;
+  var cmax=Math.max.apply(null,DATA.map(function(o){return o.cnt;}))||1;
+  var barMaxH=ph*0.30;
+  function X(i){ return pl + (n===1?pw/2:pw*i/(n-1)); }
+  function Y(v){ return ptp + ph*(1-(v-lo)/(hi-lo)); }
+  function el(t,a){ var e=document.createElementNS(NS,t); for(var k in a){ e.setAttribute(k,a[k]); } return e; }
+  function fmt(x){ return Math.round(x).toLocaleString('ko-KR'); }
+  // 가로 그리드 + y축 라벨
+  for(var g=0; g<=4; g++){
+    var gy=ptp+ph*g/4;
+    svg.appendChild(el('line',{x1:pl,y1:gy,x2:W-pr,y2:gy,stroke:'#eef2f7','stroke-width':1}));
+    var t=el('text',{x:pl-7,y:gy+3,'class':'axl','text-anchor':'end'}); t.textContent=fmt(hi-(hi-lo)*g/4); svg.appendChild(t);
+  }
+  // 거래건수 막대
+  var barW=Math.min(20, pw/n*0.5);
+  DATA.forEach(function(o,i){
+    var bh=barMaxH*o.cnt/cmax;
+    var r=el('rect',{x:X(i)-barW/2,y:(ptp+ph)-bh,width:barW,height:bh,rx:2,'class':'v-bar'});
+    r.style.setProperty('--d',(i*0.035)+'s'); svg.appendChild(r);
+  });
+  // 밴드(최저~최고)
+  var up=DATA.map(function(o,i){return X(i)+','+Y(o.max);});
+  var dn=DATA.map(function(o,i){return X(i)+','+Y(o.min);}).reverse();
+  svg.appendChild(el('polygon',{points:up.concat(dn).join(' '),'class':'v-band'}));
+  // 라인들
+  function poly(key,cls){ return el('polyline',{points:DATA.map(function(o,i){return X(i)+','+Y(o[key]);}).join(' '),'class':cls,fill:'none'}); }
+  var maxL=poly('max','v-max'), minL=poly('min','v-min'), avgL=poly('avg','v-avg');
+  svg.appendChild(maxL); svg.appendChild(minL); svg.appendChild(avgL);
+  // 평균선 그려지는 애니메이션
+  var L=avgL.getTotalLength(); avgL.style.strokeDasharray=L; avgL.style.strokeDashoffset=L; avgL.style.transition='stroke-dashoffset 1.15s ease .15s';
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ avgL.style.strokeDashoffset='0'; }); });
+  // 평균 점
+  DATA.forEach(function(o,i){
+    var c=el('circle',{cx:X(i),cy:Y(o.avg),r:3.2,'class':'v-pt'}); c.style.setProperty('--d',(0.5+i*0.035)+'s'); svg.appendChild(c);
+  });
+  // 최신 점 펄스(살아있는 느낌)
+  var lastAvg=DATA[n-1].avg;
+  svg.appendChild(el('circle',{cx:X(n-1),cy:Y(lastAvg),r:4,'class':'v-pulse'}));
+  // x축 라벨
+  function xlab(i,a){ var t=el('text',{x:X(i),y:H-8,'class':'axl','text-anchor':a}); t.textContent=DATA[i].d.slice(5); svg.appendChild(t); }
+  xlab(0,'start'); xlab(n-1,'end'); if(n>=5){ xlab(Math.floor((n-1)/2),'middle'); }
+  // 호버 가이드/강조점
+  var guide=el('line',{x1:0,y1:ptp,x2:0,y2:ptp+ph,'class':'v-guide'}); guide.style.opacity=0; svg.appendChild(guide);
+  var hpt=el('circle',{r:5.5,'class':'v-hpt'}); hpt.style.opacity=0; svg.appendChild(hpt);
+  var bars=svg.querySelectorAll('.v-bar'), pts=svg.querySelectorAll('.v-pt');
+  // 각 날짜의 세로 컬럼 전체가 마우스에 반응(막대 위치에 올려도 툴팁)
+  var half = pw/(n-1)/2;
+  DATA.forEach(function(o,i){
+    var x0=X(i)-half, w0=half*2;
+    if(i===0){ x0=pl-4; w0=X(0)-pl+half+4; }
+    if(i===n-1){ w0=(W-pr)-x0+4; }
+    var hit=el('rect',{x:x0,y:ptp,width:w0,height:ph,fill:'transparent','class':'v-hit'});
+    hit.addEventListener('mouseenter',function(){ show(i); });
+    hit.addEventListener('mousemove',function(ev){ move(ev); });
+    hit.addEventListener('mouseleave',function(){ hide(i); });
+    svg.appendChild(hit);
+  });
+  function show(i){
+    guide.setAttribute('x1',X(i)); guide.setAttribute('x2',X(i)); guide.style.opacity=1;
+    hpt.setAttribute('cx',X(i)); hpt.setAttribute('cy',Y(DATA[i].avg)); hpt.style.opacity=1;
+    if(bars[i]) bars[i].classList.add('on'); if(pts[i]) pts[i].classList.add('on');
+    var o=DATA[i];
+    tip.innerHTML='<div class="td">'+o.d+' &middot; '+o.cnt+'건</div>'+
+      '<div class="tr"><span class="k hi">최고</span><b>'+fmt(o.max)+'원</b></div>'+
+      '<div class="tr"><span class="k avg">평균</span><b>'+fmt(o.avg)+'원</b></div>'+
+      '<div class="tr"><span class="k lo">최저</span><b>'+fmt(o.min)+'원</b></div>';
+    tip.hidden=false;
+  }
+  function move(ev){
+    var rect=box.getBoundingClientRect(), px=ev.clientX-rect.left, py=ev.clientY-rect.top;
+    var left=px+16; if(left+tip.offsetWidth>rect.width) left=px-tip.offsetWidth-16; if(left<0) left=4;
+    var top=py-tip.offsetHeight-12; if(top<4) top=py+18;
+    tip.style.left=left+'px'; tip.style.top=top+'px';
+  }
+  function hide(i){ guide.style.opacity=0; hpt.style.opacity=0; tip.hidden=true; if(bars[i]) bars[i].classList.remove('on'); if(pts[i]) pts[i].classList.remove('on'); }
+})();
+</script>
   </section>
 
   <section>
@@ -139,7 +240,7 @@
   <div class="d-body">
     <table class="inner">
       <thead><tr><th>시각</th><th>서버</th><th>물품명</th><th>수량</th><th>거래액</th><th>만당가</th></tr></thead>
-      <tbody><tr><td>00:19</td><td>전주</td><td class='nm'>전섭가능 개인 50만(2분할) 청옥석 팝니다</td><td>50만 게임머니</td><td class='num'>340,000원</td><td class='num strong'>6,800원</td></tr><tr><td>00:48</td><td>한양</td><td class='nm'>30만 게임머니 팝니다.</td><td>30만 게임머니</td><td class='num'>200,000원</td><td class='num strong'>6,667원</td></tr><tr><td>02:37</td><td>한양</td><td class='nm'>개인청옥석 52000 최저가 팝니다 전섭 바로 거래가능!</td><td>5만2,000 게임머니</td><td class='num'>30,000원</td><td class='num strong'>5,769원</td></tr><tr><td>07:00</td><td>부산</td><td class='nm'>12만 한방판매합니당</td><td>12만 게임머니</td><td class='num'>77,000원</td><td class='num strong'>6,417원</td></tr><tr><td>09:34</td><td>한양</td><td class='nm'>접속중) 전섭 7만 청옥석 빠르게 팝니다!</td><td>7만 게임머니</td><td class='num'>40,000원</td><td class='num strong'>5,714원</td></tr><tr><td>12:09</td><td>한양</td><td class='nm'>예약 &gt;&gt;&gt; 50만 청옥석 팝니다    (빠른거래대기 ) (전서버가능)</td><td>50만 게임머니</td><td class='num'>350,000원</td><td class='num strong'>7,000원</td></tr><tr><td>12:34</td><td>전주</td><td class='nm'>40만  게임머니 팝니다.</td><td>40만 게임머니</td><td class='num'>280,000원</td><td class='num strong'>7,000원</td></tr><tr><td>17:47</td><td>부산</td><td class='nm'>개인 전섭 19만 청옥석 한방 판매합니다</td><td>19만 게임머니</td><td class='num'>133,000원</td><td class='num strong'>7,000원</td></tr><tr><td>20:25</td><td>대구</td><td class='nm'>전섭가능 3분이내접 10~80만청옥팝니다</td><td>10만 게임머니</td><td class='num'>70,000원</td><td class='num strong'>7,000원</td></tr><tr><td>21:28</td><td>부산</td><td class='nm'>개인 전섭 19만 청옥석 한방 판매합니다</td><td>19만 게임머니</td><td class='num'>133,000원</td><td class='num strong'>7,000원</td></tr><tr><td>22:12</td><td>광주</td><td class='nm'>20만 한방~~~~~~~~~~~~~~~~~~~~~</td><td>20만 게임머니</td><td class='num'>125,000원</td><td class='num strong'>6,250원</td></tr><tr><td>22:45</td><td>삼척</td><td class='nm'>⭕❤️⭕한방❤️안전 사냥다야❤️안전⭕❤️⭕</td><td>1만 게임머니</td><td class='num'>8,470원</td><td class='num strong'>8,470원</td></tr><tr><td>23:38</td><td>기타</td><td class='nm'>개인 전섭 12만 청옥석 한방 판매합니다</td><td>12만 게임머니</td><td class='num'>84,000원</td><td class='num strong'>7,000원</td></tr><tr><td>23:45</td><td>부산</td><td class='nm'>예약33</td><td>5만 게임머니</td><td class='num'>35,000원</td><td class='num strong'>7,000원</td></tr><tr><td>23:45</td><td>부산</td><td class='nm'>10만  게임머니 팝니다.</td><td>10만 게임머니</td><td class='num'>69,500원</td><td class='num strong'>6,950원</td></tr></tbody>
+      <tbody><tr><td>00:19</td><td>전주</td><td class='nm'>전섭가능 개인 50만(2분할) 청옥석 팝니다</td><td>50만 게임머니</td><td class='num'>340,000원</td><td class='num strong'>6,800원</td></tr><tr><td>00:48</td><td>한양</td><td class='nm'>30만 게임머니 팝니다.</td><td>30만 게임머니</td><td class='num'>200,000원</td><td class='num strong'>6,667원</td></tr><tr><td>02:37</td><td>한양</td><td class='nm'>개인청옥석 52000 최저가 팝니다 전섭 바로 거래가능!</td><td>5만2,000 게임머니</td><td class='num'>30,000원</td><td class='num strong'>5,769원</td></tr><tr><td>07:00</td><td>부산</td><td class='nm'>12만 한방판매합니당</td><td>12만 게임머니</td><td class='num'>77,000원</td><td class='num strong'>6,417원</td></tr><tr><td>09:34</td><td>한양</td><td class='nm'>접속중) 전섭 7만 청옥석 빠르게 팝니다!</td><td>7만 게임머니</td><td class='num'>40,000원</td><td class='num strong'>5,714원</td></tr><tr><td>12:09</td><td>한양</td><td class='nm'>예약 &gt;&gt;&gt; 50만 청옥석 팝니다    (빠른거래대기 ) (전서버가능)</td><td>50만 게임머니</td><td class='num'>350,000원</td><td class='num strong'>7,000원</td></tr><tr><td>12:34</td><td>전주</td><td class='nm'>40만  게임머니 팝니다.</td><td>40만 게임머니</td><td class='num'>280,000원</td><td class='num strong'>7,000원</td></tr><tr><td>17:47</td><td>부산</td><td class='nm'>개인 전섭 19만 청옥석 한방 판매합니다</td><td>19만 게임머니</td><td class='num'>133,000원</td><td class='num strong'>7,000원</td></tr><tr><td>20:25</td><td>대구</td><td class='nm'>전섭가능 3분이내접 10~80만청옥팝니다</td><td>10만 게임머니</td><td class='num'>70,000원</td><td class='num strong'>7,000원</td></tr><tr><td>21:28</td><td>부산</td><td class='nm'>개인 전섭 19만 청옥석 한방 판매합니다</td><td>19만 게임머니</td><td class='num'>133,000원</td><td class='num strong'>7,000원</td></tr><tr><td>22:12</td><td>광주</td><td class='nm'>20만 한방~~~~~~~~~~~~~~~~~~~~~</td><td>20만 게임머니</td><td class='num'>125,000원</td><td class='num strong'>6,250원</td></tr><tr><td>22:45</td><td>삼척</td><td class='nm'>⭕❤️⭕한방❤️안전 사냥다야❤️안전⭕❤️⭕</td><td>1만 게임머니</td><td class='num'>8,470원</td><td class='num strong'>8,470원</td></tr><tr><td>23:38</td><td>기타</td><td class='nm'>개인 전섭 12만 청옥석 한방 판매합니다</td><td>12만 게임머니</td><td class='num'>84,000원</td><td class='num strong'>7,000원</td></tr><tr><td>23:45</td><td>부산</td><td class='nm'>10만  게임머니 팝니다.</td><td>10만 게임머니</td><td class='num'>69,500원</td><td class='num strong'>6,950원</td></tr><tr><td>23:45</td><td>부산</td><td class='nm'>예약33</td><td>5만 게임머니</td><td class='num'>35,000원</td><td class='num strong'>7,000원</td></tr></tbody>
     </table>
   </div>
 </details><details class="day">
@@ -247,7 +348,7 @@
     <table>
       <thead><tr><th>날짜</th><th>기준시각</th><th>평균가</th><th>중앙값</th><th>최저</th><th>최고</th><th>매물수</th></tr></thead>
       <tbody>
-<tr><td>2026-07-02</td><td>11:57</td><td class='num strong'>8,069원</td><td class='num'>8,200원</td><td class='num lo'>6,000원</td><td class='num hi'>9,091원</td><td class='num'>108건</td></tr>
+<tr><td>2026-07-02</td><td>13:44</td><td class='num strong'>8,067원</td><td class='num'>8,200원</td><td class='num lo'>6,000원</td><td class='num hi'>9,091원</td><td class='num'>109건</td></tr>
 
       </tbody>
     </table>
@@ -255,7 +356,7 @@
 
   <footer>
     데이터 출처: <a href="https://www.barotem.com/product/lists/2382r973?page=1&sell=sell&display=1&orderby=1" target="_blank">바로템 - 임진왜란:조선의 반격 게임머니</a><br>
-    매시간 자동 갱신 · 페이지 생성 시각: 2026-07-02 11:57<br>
+    매시간 자동 갱신 · 페이지 생성 시각: 2026-07-02 13:44<br>
     ※ 만(10,000)게임머니당 단가 = 일괄/분할 판매단위 정규화 후 산출<br>
     ※ 거래완료 날짜는 사이트가 체결일시를 제공하지 않아 매물 등록일(reg_date) 기준이며, 완료 매물은 매일 중복 제거하여 누적합니다.
   </footer>
