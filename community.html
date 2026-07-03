@@ -23,6 +23,9 @@
   header{margin-bottom:28px;}
   header h1{font-size:23px;font-weight:800;color:var(--ink);margin:0 0 6px;letter-spacing:-0.02em;}
   header p{margin:0;color:var(--muted);font-size:13px;}
+  .viewbar{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 13px;}
+  .viewbar b{color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;}
+  .viewbar i{width:3px;height:3px;border-radius:50%;background:var(--faint);display:inline-block;}
   .tag{display:inline-block;background:#f1f3f7;color:#9aa3b2;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;margin-left:8px;vertical-align:middle;letter-spacing:0;}
 
   .seg{display:inline-flex;background:#eef1f6;border-radius:11px;padding:4px;gap:2px;margin-bottom:22px;}
@@ -127,6 +130,7 @@
   <header>
     <h1>커뮤니티 동향 분석<span class="tag">v3.0.0</span></h1>
     <p>임진왜란: 조선의 반격 · 네이버 라운지 · DC 마이너갤러리 · 매일 10시 갱신</p>
+    <div class="viewbar">오늘 방문 <b id="vcU">&ndash;</b> <i></i> 오늘 조회 <b id="vcT">&ndash;</b> <i></i> 누적 조회 <b id="vcA">&ndash;</b></div>
   </header>
 
   <div class="seg" id="tabs">
@@ -152,6 +156,20 @@
     var p=b.getAttribute('data-p');
     blocks.forEach(function(bl){ bl.style.display=(bl.getAttribute('data-p')===p)?'':'none'; });
   }); });
+})();
+// 방문자·조회수 카운터 (Abacus 무료 히트 카운터, 커뮤니티 전용 네임스페이스)
+(function(){
+  var ns='imjin-community-v1';
+  var d=new Date();
+  var ds=''+d.getFullYear()+('0'+(d.getMonth()+1)).slice(-2)+('0'+d.getDate()).slice(-2);
+  var uEl=document.getElementById('vcU'), tEl=document.getElementById('vcT'), aEl=document.getElementById('vcA');
+  function put(el,v){ if(el) el.textContent=(v||0).toLocaleString('ko-KR'); }
+  var B='https://abacus.jasoncameron.dev/';
+  fetch(B+'hit/'+ns+'/total-'+ds).then(function(r){return r.json();}).then(function(j){ put(tEl,j.value); }).catch(function(){ put(tEl,'-'); });
+  fetch(B+'hit/'+ns+'/alltime').then(function(r){return r.json();}).then(function(j){ put(aEl,j.value); }).catch(function(){ put(aEl,'-'); });
+  var key='cc-uniq-'+ds, seen=false;
+  try{ seen=!!localStorage.getItem(key); if(!seen) localStorage.setItem(key,'1'); }catch(e){}
+  fetch(B+(seen?'get':'hit')+'/'+ns+'/uniq-'+ds).then(function(r){return r.json();}).then(function(j){ put(uEl,j.value); }).catch(function(){ put(uEl,'-'); });
 })();
 </script>
 </body>
